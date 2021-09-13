@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  rabbitmq-mgmt:
+    container_name: rabbitmq-mgmt
+    hostname: rabbitmq-mgmt
+    build:
+      context: ./rabbitmq
+      args:
+        RABBITMQ_VERSION: "3.8.22"
+        ERLANG_VERSION: "24.0"
+    environment:
+      IS_MGMT: "true"
+    ports:
+      - "15672:15672"
+    volumes:
+      - ${PWD}/rabbitmq/files/rabbitmq.conf:/opt/app/etc/rabbitmq.conf
+  rabbitmq:
+    deploy:
+      replicas: 3
+    build:
+      context: ./rabbitmq
+      args:
+        RABBITMQ_VERSION: "3.8.22"
+        ERLANG_VERSION: "24.0"
+    environment:
+      RABBITMQ_MGMT: "rabbitmq-mgmt"
+    volumes:
+      - ${PWD}/rabbitmq/files/rabbitmq.conf:/opt/app/etc/rabbitmq.conf
