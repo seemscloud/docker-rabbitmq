@@ -18,7 +18,6 @@ services:
   rabbitmq:
     deploy:
       replicas: 3
-    hostname: rabbitmq
     build:
       context: ./rabbitmq
       args:
