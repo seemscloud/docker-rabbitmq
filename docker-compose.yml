@@ -18,6 +18,7 @@ services:
   rabbitmq:
     deploy:
       replicas: 3
+    hostname: rabbitmq
     build:
       context: ./rabbitmq
       args:
@@ -27,3 +28,10 @@ services:
       RABBITMQ_MGMT: "rabbitmq-mgmt"
     volumes:
       - ${PWD}/rabbitmq/files/rabbitmq.conf:/opt/app/etc/rabbitmq.conf
+  rabbitmq-client:
+    container_name: rabbitmq-client
+    hostname: rabbitmq-client
+    build:
+      context: ./rabbitmq-client
+    ports:
+      - "8080:8080"
