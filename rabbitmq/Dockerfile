@@ -35,7 +35,7 @@ RUN ./configure --prefix=/opt/erlang/${ERLANG_VERSION} &&  \
     make && \
     make install
 
-RUN apt-get install -y locales
+RUN apt-get install -y locales dnsutils
 
 USER rabbitmq
 WORKDIR ${APPDIR}

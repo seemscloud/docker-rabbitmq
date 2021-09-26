@@ -1,9 +1,9 @@
 version: '3.9'
 
 services:
-  rabbitmq-mgmt:
+  rabbitmq-init:
     container_name: rabbitmq-mgmt
-    hostname: rabbitmq-mgmt
+    hostname: rabbitmq-init
     build:
       context: ./rabbitmq
       args:
@@ -14,18 +14,16 @@ services:
     ports:
       - "15672:15672"
     volumes:
-      - ${PWD}/rabbitmq/files/rabbitmq.conf:/opt/app/etc/rabbitmq.conf
-  rabbitmq:
+      - ${PWD}/rabbitmq/files/rabbitmq-mgmt.conf:/opt/app/etc/rabbitmq.conf
+  rabbitmq-discovery:
     deploy:
-      replicas: 3
-    hostname: rabbitmq-node
+      replicas: 5
+    hostname: rabbitmq-discovery
     build:
       context: ./rabbitmq
       args:
         RABBITMQ_VERSION: "3.8.22"
         ERLANG_VERSION: "24.0"
-    environment:
-      RABBITMQ_MGMT: "rabbitmq-mgmt"
     volumes:
       - ${PWD}/rabbitmq/files/rabbitmq.conf:/opt/app/etc/rabbitmq.conf
   rabbitmq-client:
